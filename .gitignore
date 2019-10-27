@@ -102,3 +102,9 @@ venv.bak/
 
 # mypy
 .mypy_cache/
+
+# libraries should not lock
+/Pipfile.lock
+
+# pip-wheel-metadata folder
+/pip-wheel-metadata/
