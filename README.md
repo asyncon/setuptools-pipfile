@@ -2,7 +2,6 @@
 
 Dependency management via Pipfile
 
-[![Downloads](https://pepy.tech/badge/setuptools-pipfile)](https://pepy.tech/project/setuptools-pipfile)
 [![Travis (.org)](https://img.shields.io/travis/asyncon/setuptools-pipfile)](https://travis-ci.org/projects/asyncon/setuptools-pipfile)
 [![PyPI](https://img.shields.io/pypi/v/setuptools-pipfile.svg)](https://pypi.org/project/setuptools-pipfile/)
 [![Python](https://img.shields.io/pypi/pyversions/setuptools-pipfile.svg)](https://pypi.org/project/setuptools-pipfile/)
