@@ -57,10 +57,11 @@ def clone_config(cfg, interpolate=False):
 
 
 class Dependency(dict):
-    def __init__(self, name, data):
+    def __init__(self, name, data, sources):
         data = {'version': data} if isinstance(data, str) else data
         super().__init__(data)
         self['name'] = name
+        self['sources'] = sources
 
     @property
     def name(self):
@@ -69,19 +70,21 @@ class Dependency(dict):
     @property
     def url(self):
         keys = list(url_keys & self.keys())
-        if not keys:
+        if not keys and 'index' not in self:
             return ''
-        if len(keys) > 1:
+        if len(keys) > (1 - ('index' in self)):
             raise DistutilsSetupError(
                 'Pipfile Dependency[{0}] conflict: {1!r}'.format(
                     self.name, keys))
-        if 'version' in self:
+        if keys and 'version' in self:
             raise DistutilsSetupError(
                 'Pipfile Dependency[{0}] conflict: {1!r}'.format(
                     self.name, ['version'] + keys))
-        url = keys[0]
+        url = keys[0] if keys else 'index'
         if url in ('git', 'svn', 'hg', 'bzr'):
             url = '{0}+{1}'.format(url, self[url])
+        elif url == 'index':
+            url = '{0}/{1}/'.format(self['sources'][self['index']], self.name)
         else:
             url = self[url]
         if 'ref' in self:
@@ -133,7 +136,7 @@ class Pipfile(dict):
             self.extras['table'] = None
 
         if pythons is True:
-            self.pythons = '{0[requires][python_version]}'
+            self.pythons = '=={0[requires][python_version]}'
         else:
             self.pythons = pythons
 
@@ -151,11 +154,16 @@ class Pipfile(dict):
 
         super().__init__(clone_config(data, interpolate))
 
-    def not_dot(self, spec):
-        return isinstance(spec, str) or spec.get('path') != '.'
+    @property
+    def sources(self):
+        return {s['name']: s['url'].rstrip('/') for s in self['source']}
 
     def get_deps(self, table):
-        return [Dependency(k, v) for k, v in table.items() if self.not_dot(v)]
+        return [
+            Dependency(name, spec, self.sources)
+            for name, spec in table.items()
+            if isinstance(spec, str) or spec.get('path') != '.'
+        ]
 
     @property
     def deps(self):

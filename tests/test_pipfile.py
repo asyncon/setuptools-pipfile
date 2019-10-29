@@ -51,7 +51,7 @@ def test_extras_style_two(pf):
 def test_python_requires(pf):
     write_toml(pf, {})
     assert Pipfile(pf, pythons=True).setup_kwargs() == {
-        'python_requires': requires['python_version']
+        'python_requires': '=={0}'.format(requires['python_version'])
     }
 
 

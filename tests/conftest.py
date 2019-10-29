@@ -1,6 +1,7 @@
 import sys
 import toml
 import pytest
+from setuptools.dist import check_requirements, check_specifier, check_extras
 
 requires = {'python_version': '{0.major}.{0.minor}'.format(sys.version_info)}
 source = [{'name': 'pypi', 'url': 'https://pypi.org/simple', 'verify_ssl': True}]
@@ -30,17 +31,16 @@ def write_toml(p, data, dump=False):
         print(p.read_text())
 
 
-class Options:
-    def __init__(self, d):
-        self.__dict__['_d'] = d
-    def __setattr__(self, key, value):
-        self._d[key] = value
-
-
 class Dist(dict):
-    def __init__(self):
-        super().__init__()
-        self.options = Options(self)
+    def __setattr__(self, key, value):
+        if value:
+            if key == 'python_requires':
+                check_specifier(self, key, value)
+            elif key in ('install_requires', 'tests_require'):
+                check_requirements(self, key, value)
+            elif key == 'extras_require':
+                check_extras(self, key, value)
+        self[key] = value
 
 
 @pytest.fixture

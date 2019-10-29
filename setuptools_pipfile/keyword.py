@@ -23,4 +23,4 @@ def use_pipfile(dist, attr, value):
     pipfile = Pipfile(path, interpolate, pythons, extras)
 
     for k, v in pipfile.setup_kwargs().items():
-        setattr(dist.options, k, v)
+        setattr(dist, k, v)

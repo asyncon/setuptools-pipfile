@@ -53,7 +53,7 @@ def test_python_requires(pf, dist):
     write_toml(pf, {})
     use_pipfile(dist, 'use_pipfile', {'path': pf, 'pythons': True})
     assert dist == {
-        'python_requires': requires['python_version']
+        'python_requires': '=={0}'.format(requires['python_version'])
     }
 
 
@@ -101,7 +101,7 @@ def test_complex_dependencies(pf, dist):
             'requests[socks]',
             'django @ git+https://github.com/django/django.git@1.11.4#egg=django',
             'e682b37 @ https://github.com/divio/django-cms/archive/release/3.4.x.zip',
-            "pywinusb ; sys_platform == 'win32'",
+            "pywinusb @ https://test.pypi.org/simple/pywinusb/ ; sys_platform == 'win32'",
             "unittest2>=1.0,<3.0 ; (python_version < '2.7.9' or (python_version >= '3.0' and python_version < '3.4')) and os_name == 'nt'"
         ],
         'dependency_links': ['https://test.pypi.org/simple']
