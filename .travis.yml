@@ -1,0 +1,54 @@
+dist: xenial
+language: python
+
+stages:
+  - test
+  - testdeploy
+  - deploy
+
+install: pip install tox
+script: tox
+
+jobs:
+  include:
+    - python: 3.4
+      env: TOXENV=py34
+    - python: 3.5
+      env: TOXENV=py35
+    - python: 3.6
+      env: TOXENV=py36
+    - python: 3.7
+      env: TOXENV=py37
+    - python: 3.8
+      env: TOXENV=py38
+    - stage: testdeploy
+      name: "Deploy to Test PyPI"
+      python: 3.8
+      install: pip install -U pip setuptools wheel
+      script: python setup.py sdist bdist_wheel
+      deploy:
+        provider: pypi
+        distributions: "sdist bdist_wheel"
+        skip_cleanup: true
+        user: __token__
+        password:
+          secure: C104a8Jg4ezs086bS7zj963GJFfas4VLmkatV+78cAr9BQjBgnzRj40dcC4a6ZlGbLhRc6vhkAfjvyEYNKYaPAiDt7RrJCGlDrNBZ+2KOqmv/znBpjN6cJYcZG6NJxDSBsVdLKGHAXYHRQVQDSOyunSqyiwV/9wB0IE9pOUQLuljBif3x0gTkA2QirPKHUbewo44ihnQ+hmQ98UF5yxUImexRbDJXqc8sigJvkjAeTnCzvvJh3nlI+s1ZQjwebYnBOzONFLpK387COSUGRrS0admNRxGPVyAK0Fx7CRjHU56KwIn8rTsd00mJktBFGTovHOH1HmAeIWqIkIfPJ1k/wM03uV2RW/2xsjmrppLuBSbUg/S2fSk1TD7sehk4tiQY59nOkHOi3QLxw7qS4Yvziwj0jU/zsM1do9VHJkRmBnUuSMf+MFeuymYiOuxUbKetozKooE2Q667WalwHRdlIdxhyk2Rc5iXKD3LJgVTA9QEQgck7VZDIjR/5n0pPfYQnUWfCsuN3UI9IAfgSDEnvHl9UrM9ymVJ3KdOja8V2qiPvyYFaMcd6MbygZk12MvxYG/8NnZcvLkCdLaZX3hdn6+Mdczqa9g6rN0bzMb9o9nBqY4zMTQlE7Gy2hGW57xm0xykQqjcBvjVYkIoQcSs9v+/dlxFpG2NTkI+u6c129g=
+        server: https://test.pypi.org/legacy/
+        on:
+          python: 3.8
+          tags: true
+    - stage: deploy
+      name: "Deploy to PyPI"
+      python: 3.8
+      install: pip install -U pip setuptools wheel
+      script: python setup.py sdist bdist_wheel
+      deploy:
+        provider: pypi
+        distributions: "sdist bdist_wheel"
+        user: __token__
+        password:
+          secure: Rmwpep/RtdGCE9gTC8Jw6ybVCi1LH2jvwJ8W0Iwab1uoyeA8RArJGZz0y9jWguAd/Ob4d7TnToCoBOzdHtX6eXtadpKCmy1t1tIZWgW05BIe0QybeAIvbm9dPxmLz0zKP1u2xQFp19CuB8qAo5rVJvjos+3LR40i8ie7ljs3bDSpzlCezS5b86sWgcUxDCD5U9gIedIixGlJXFomROZHNi7i+ay+r7PwWUlNebWVWglvRS6wIVsrElihaXY+kAsbNMAnjTlnF80umAYSo1bLX2My18yJeTcGDE/Pgb1n74FPbSDY2d6Tkn1P0F+0fOO7O9MqJyfUG7MhEcttX+9am41mOalC8IfUZqMe2EfQrsyCXPWcEawYAC1aYwd4kZisVRzLSzedUaHs/DhBZPrxI+BdXueKp0xED1Ixkm8b3/NfhU0JzTGD/Qtb3qtuu+y8M86IjNRZKSaaEiXFwKbS8QGA5lpt8AdR4VIEhfEJ+3xBlIrYoe8ueAdQDrAwBU3LouRYnAPJ04JfeFHk59WsCMsUE0G7VzE+/hcHPs19yHStBMbVG7n8scF1A7ZbY4OIxHf1ERxGupJxjqijJH3mOApzyXw1+yF+xrvzru3TTUnN7NppLq84sOjErzS0vDiO/sxti8oGtE7mYa9imw4Mu6GqGSos+NZ+cwzaPgAEHpc=
+        on:
+          python: 3.8
+          tags: true
+          branch: master

@@ -93,16 +93,16 @@ def test_complex_dependencies(pf, dist):
                 'os_name': "== 'nt'"
             })
         }
-    }, 1)
+    })
     use_pipfile(dist, 'use_pipfile', pf)
     assert dist == {
         'tests_require': [
-            'records>0.5.0',
-            'requests[socks]',
             'django @ git+https://github.com/django/django.git@1.11.4#egg=django',
             'e682b37 @ https://github.com/divio/django-cms/archive/release/3.4.x.zip',
             "pywinusb @ https://test.pypi.org/simple/pywinusb/ ; sys_platform == 'win32'",
-            "unittest2>=1.0,<3.0 ; (python_version < '2.7.9' or (python_version >= '3.0' and python_version < '3.4')) and os_name == 'nt'"
+            'records>0.5.0',
+            'requests[socks]',
+            "unittest2>=1.0,<3.0 ; (python_version < '2.7.9' or (python_version >= '3.0' and python_version < '3.4')) and os_name == 'nt'",
         ],
         'dependency_links': ['https://test.pypi.org/simple']
     }

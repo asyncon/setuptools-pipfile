@@ -144,10 +144,10 @@ class Pipfile(dict):
             data = path
             self.path = 'Pipfile'
         else:
-            self.path = path
-            if not os.path.exists(path):
+            self.path = str(path)
+            if not os.path.exists(self.path):
                 raise DistutilsFileError(
-                    'Pipfile missing {0}'.format(os.path.abspath(path)))
+                    'Pipfile missing {0}'.format(os.path.abspath(self.path)))
 
             with open(self.path, 'r') as fp:
                 data = toml.load(fp)
@@ -193,11 +193,11 @@ class Pipfile(dict):
 
     @property
     def install_requires(self):
-        return [str(p) for p in self.deps]
+        return sorted(str(p) for p in self.deps)
 
     @property
     def tests_require(self):
-        return [str(d) for d in self.dev_deps]
+        return sorted(str(d) for d in self.dev_deps)
 
     @property
     def dependency_links(self):
@@ -208,7 +208,7 @@ class Pipfile(dict):
     def extras_require(self):
         if not self.extras['table']:
             return None
-        return {k: [str(d) for d in v] for k, v in self.extra_deps.items()}
+        return {k: sorted(str(d) for d in v) for k, v in self.extra_deps.items()}
 
     @property
     def python_requires(self):
