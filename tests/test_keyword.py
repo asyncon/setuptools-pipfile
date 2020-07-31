@@ -49,6 +49,21 @@ def test_extras_style_two(pf, dist):
     }
 
 
+def test_extras_style_three(pf, dist):
+    write_toml(pf, {
+        'dev-packages': {
+            'coverage': Spec({'extras': ['toml'], 'version': '*'}),
+        }
+    })
+    use_pipfile(dist, 'use_pipfile', {'path': pf, 'extras': 3})
+    assert dist == {
+        'extras_require': {
+            'dev': ['coverage[toml]'],
+        },
+        'tests_require': ['coverage[toml]'],
+    }
+
+
 def test_python_requires(pf, dist):
     write_toml(pf, {})
     use_pipfile(dist, 'use_pipfile', {'path': pf, 'pythons': True})

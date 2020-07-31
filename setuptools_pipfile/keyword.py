@@ -19,6 +19,8 @@ def use_pipfile(dist, attr, value):
         pythons = value.get('pythons', pythons)
     elif isinstance(value, (str, Path)):
         path = value
+    elif isinstance(value, int):
+        extras = value
     elif hasattr(value, '__fspath__'):
         path = value
 

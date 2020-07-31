@@ -69,7 +69,7 @@ setup(use_pipfile={'pythons': '{0[requires][python_versions]}'})
 
 ### Populate Extras
 
-This is currently not supported by Pipfile but if it does it will likely be supported in one of two ways.
+This is currently not supported by Pipfile but if it does it will likely be supported in one of three ways.
 
 #### Style One
 
@@ -85,6 +85,10 @@ To use the default setup for style one:
 
 ```python
 setup(use_pipfile={'extras': True})
+# or
+setup(use_pipfile={'extras': 1})
+# or
+setup(use_pipfile=1)
 ```
 
 To change the prefix for the table to something like `[option.socks]` use:
@@ -110,6 +114,10 @@ To use the default setup for style two:
 
 ```python
 setup(use_pipfile={'extras': {'style': 2}})
+# or
+setup(use_pipfile={'extras': 2})
+# or
+setup(use_pipfile=2)
 ```
 
 Like style one use the `table` field to change the table prefix.
@@ -143,6 +151,30 @@ This would result in:
 [[extra]]
 title = "socks"
 ```
+
+#### Style Three
+
+The third style is based on the Pipfile dev-packages implementation.
+
+```toml
+[socks-packages]
+PySocks = {version = ">=1.5.6, !1.5.7"}
+win_inet_pton = {sys_platform = "win32", python_version = "2.7"}
+```
+
+To use style three:
+
+```python
+setup(use_pipfile={'extras': {'style': 3}})
+# or
+setup(use_pipfile={'extras': 3})
+# or
+setup(use_pipfile=3)
+```
+
+This last varient is the quickest way to make the dev packages installable.
+This could be useful for testing frameworks such as tox.
+Simply specify your dependencies to be `.[dev]`.
 
 ## Future State
 

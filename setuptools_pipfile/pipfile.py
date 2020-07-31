@@ -128,6 +128,8 @@ class Pipfile(dict):
 
         if extras is True:
             pass
+        elif extras and isinstance(extras, int):
+            self.extras['style'] = extras
         elif isinstance(extras, str):
             self.extras['table'] = extras
         elif isinstance(extras, Mapping):
@@ -175,6 +177,12 @@ class Pipfile(dict):
 
     @property
     def extra_deps(self):
+        if self.extras.get('style', 1) == 3:
+            return {
+                k[:-9]: self.get_deps(v)
+                for k, v in self.items()
+                if k.endswith('-packages')
+            }
         if self.extras.get('style', 1) != 2:
             return {
                 k: self.get_deps(v)

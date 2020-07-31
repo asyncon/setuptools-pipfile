@@ -49,6 +49,20 @@ def test_extras_style_two(pf):
     }
 
 
+def test_extras_style_three(pf):
+    write_toml(pf, {
+        'dev-packages': {
+            'coverage': Spec({'extras': ['toml'], 'version': '*'}),
+        }
+    })
+    assert Pipfile(pf, extras=3).setup_kwargs() == {
+        'extras_require': {
+            'dev': ['coverage[toml]'],
+        },
+        'tests_require': ['coverage[toml]'],
+    }
+
+
 def test_python_requires(pf):
     write_toml(pf, {})
     assert Pipfile(pf, pythons=True).setup_kwargs() == {
