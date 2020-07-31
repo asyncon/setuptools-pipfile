@@ -47,11 +47,11 @@ other_keys = {
 
 def clone_config(cfg, interpolate=False):
     if isinstance(cfg, Mapping):
-        return {k: clone_config(v) for k, v in cfg.items()}
+        return {k: clone_config(v, interpolate) for k, v in cfg.items()}
     elif isinstance(cfg, str):
         return os.path.expandvars(cfg) if interpolate else cfg
     elif isinstance(cfg, Iterable):
-        return [clone_config(i) for i in cfg]
+        return [clone_config(i, interpolate) for i in cfg]
     else:
         return cfg
 

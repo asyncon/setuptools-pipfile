@@ -1,5 +1,6 @@
 from setuptools_pipfile.pipfile import Pipfile, DistutilsFileError, DistutilsSetupError
 from conftest import Spec, write_toml, requires, source, pytest
+import os
 
 
 def test_default(pf):
@@ -87,3 +88,15 @@ def test_url_with_version(pf):
     })
     with pytest.raises(DistutilsSetupError):
         Pipfile(pf).setup_kwargs()
+
+
+def test_source_url_interpolation(pf):
+    write_toml(pf, {
+        'source': [{
+            'name': 'pypi',
+            'url': '${MY_CUSTOM_PIP_URL}/simple',
+            'verify_ssl': True,
+        }]
+    })
+    os.environ['MY_CUSTOM_PIP_URL'] = 'https://pypi.example.com'
+    assert Pipfile(pf, interpolate=True).sources['pypi'] == 'https://pypi.example.com/simple'
