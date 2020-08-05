@@ -2,6 +2,7 @@ import os
 import toml
 from collections.abc import Mapping, Iterable
 from distutils.errors import DistutilsSetupError, DistutilsFileError
+from urllib.parse import urlparse, urlunparse
 
 setup_fields = (
     'install_requires',
@@ -45,6 +46,11 @@ other_keys = {
 }
 
 
+def deauth_url(url):
+    u = urlparse(url)
+    return urlunparse(u[:1] + (u[1].rsplit('@', 1)[-1],) + u[2:])
+
+
 def clone_config(cfg, interpolate=False):
     if isinstance(cfg, Mapping):
         return {k: clone_config(v, interpolate) for k, v in cfg.items()}
@@ -57,11 +63,12 @@ def clone_config(cfg, interpolate=False):
 
 
 class Dependency(dict):
-    def __init__(self, name, data, sources):
+    def __init__(self, name, data, sources, indexes):
         data = {'version': data} if isinstance(data, str) else data
         super().__init__(data)
         self['name'] = name
         self['sources'] = sources
+        self['indexes'] = indexes
 
     @property
     def name(self):
@@ -84,6 +91,8 @@ class Dependency(dict):
         if url in ('git', 'svn', 'hg', 'bzr'):
             url = '{0}+{1}'.format(url, self[url])
         elif url == 'index':
+            if not self['indexes']:
+                return ''
             url = '{0}/{1}/'.format(self['sources'][self['index']], self.name)
         else:
             url = self[url]
@@ -122,8 +131,9 @@ class Dependency(dict):
 
 class Pipfile(dict):
 
-    def __init__(self, path, interpolate=False, pythons=False, extras=False):
+    def __init__(self, path, interpolate=False, pythons=False, extras=False, indexes=False):
         self.interpolate = interpolate
+        self.indexes = indexes
         self.extras = {'table': 'extra', 'key': 'name', 'subtable': 'packages'}
 
         if extras is True:
@@ -158,11 +168,15 @@ class Pipfile(dict):
 
     @property
     def sources(self):
-        return {s['name']: s['url'].rstrip('/') for s in self['source']}
+        return {
+            s['name']: s['url'].rstrip('/') if not self.interpolate
+            else deauth_url(s['url'].rstrip('/'))
+            for s in self['source']
+        }
 
     def get_deps(self, table):
         return [
-            Dependency(name, spec, self.sources)
+            Dependency(name, spec, self.sources, self.indexes)
             for name, spec in table.items()
             if isinstance(spec, str) or spec.get('path') != '.'
         ]
@@ -209,8 +223,12 @@ class Pipfile(dict):
 
     @property
     def dependency_links(self):
-        indexes = {d['index'] for d in self.all_deps if 'index' in d}
-        return sorted(s['url'] for s in self['source'] if s['name'] in indexes)
+        if self.indexes is False:
+            return []
+        return sorted(
+            '{0}/{1}/'.format(self.sources[d['index']], d.name)
+            for d in self.all_deps if 'index' in d
+        )
 
     @property
     def extras_require(self):

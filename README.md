@@ -3,8 +3,10 @@
 Dependency management via Pipfile
 
 [![Travis (.org)](https://img.shields.io/travis/asyncon/setuptools-pipfile)](https://travis-ci.org/projects/asyncon/setuptools-pipfile)
+[![MIT](https://img.shields.io/pypi/l/setuptools-pipfile.svg)](https://github.com/asyncon/setuptools-pipfile/blob/master/LICENSE)
 [![PyPI](https://img.shields.io/pypi/v/setuptools-pipfile.svg)](https://pypi.org/project/setuptools-pipfile/)
 [![Python](https://img.shields.io/pypi/pyversions/setuptools-pipfile.svg)](https://pypi.org/project/setuptools-pipfile/)
+[![Downloads](https://pepy.tech/badge/setuptools-pipfile)](https://pepy.tech/project/setuptools-pipfile)
 
 ## Overview
 
@@ -18,6 +20,7 @@ Advanced configuration can be used to control:
 
 - The path to the Pipfile.
 - Variable interpolation.
+- Removing indexes from `dependency_links`.
 - Activate and control populating `extras_require`.
 - Control populating `python_requires`.
 
@@ -33,7 +36,7 @@ If the Pipfile is located elsewhere you can set `use_pipfile` to a path relative
 
 ## Advanced Usage
 
-These are features that aren't currently provided by [pipenv](pipenv.org) but hope they will be in the future.
+These are features that aren't currently provided by [pipenv](https://pypi.org/project/pipenv/) but hope they will be in the future.
 
 To enable advanced mode simply provide a dict of options to `use_pipfile`.
 
@@ -51,6 +54,25 @@ If this pipenv feature is required for some reason it can reenabled by setting t
 
 ```python
 setup(use_pipfile={'interpolate': True})
+```
+
+Note that if interpolation is enabled all index urls will have their basic auth
+credentials stripped to prevent them from being populated into package metadata.
+
+### Disabling Custom Index Dependency Links
+
+To disable the population of custom index dependency links simply set the indexes key.
+
+```python
+setup(use_pipfile={'indexes': False})
+```
+
+To set hard set these as a direct urls in `install_requires` and `tests_require` against the [pep440][pep440] advice.
+
+[pep440]: https://www.python.org/dev/peps/pep-0440/#direct-references
+
+```python
+setup(use_pipfile={'indexes': True})
 ```
 
 ### Populate Python Requires
