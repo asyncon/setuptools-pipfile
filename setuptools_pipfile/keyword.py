@@ -1,3 +1,4 @@
+import toml
 from collections.abc import Mapping
 from pathlib import Path
 from .pipfile import Pipfile
@@ -30,3 +31,16 @@ def use_pipfile(dist, attr, value):
 
     for k, v in pipfile.setup_kwargs().items():
         setattr(dist, k, v)
+
+
+def finalize_dist(dist, path='pyproject.toml'):
+    path = Path(path)
+    if not (path.exists() and path.is_file()):
+        return
+
+    tools = toml.load(path).get('tool', {})
+    value = tools.get('setuptools-pipfile')
+    if not value:
+        value = 'setuptools-pipfile' in tools
+
+    use_pipfile(dist, None, value)

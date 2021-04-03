@@ -12,6 +12,11 @@ def pf(tmp_path):
     return tmp_path / 'Pipfile'
 
 
+@pytest.fixture
+def pp(tmp_path):
+    return tmp_path / 'pyproject.toml'
+
+
 class Spec(dict, toml.decoder.InlineTableDict):
     pass
 
@@ -26,6 +31,21 @@ def write_toml(p, data, dump=False):
         'requires': requires
     }
     spec.update(data)
+    p.write_text(toml.dumps(spec, toml.TomlPreserveInlineDictEncoder()))
+    if dump:
+        print(p.read_text())
+
+
+def write_pyproject(p, data, dump=False):
+    if dump:
+        print(data)
+    spec = {
+        'build-system': {
+            'requires': ["setuptools", "wheel"],
+            'build-backend': "setuptools.build_meta",
+        },
+        'tool': {'setuptools-pipfile': data},
+    }
     p.write_text(toml.dumps(spec, toml.TomlPreserveInlineDictEncoder()))
     if dump:
         print(p.read_text())

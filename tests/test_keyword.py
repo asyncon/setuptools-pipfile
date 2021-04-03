@@ -4,8 +4,8 @@ from conftest import Spec, write_toml, requires, source
 
 def test_default(pf, dist):
     write_toml(pf, {
-        'packages': {'requests': '*',},
-        'dev-packages': {'setuptools': '>=41.0.0',},
+        'packages': {'requests': '*'},
+        'dev-packages': {'setuptools': '>=41.0.0'},
     })
     use_pipfile(dist, 'use_pipfile', pf)
     assert dist == {
@@ -41,7 +41,7 @@ def test_extras_style_two(pf, dist):
             }
         ]
     })
-    use_pipfile(dist, 'use_pipfile', {'path': pf, 'extras': {'style': 2,}})
+    use_pipfile(dist, 'use_pipfile', {'path': pf, 'extras': {'style': 2}})
     assert dist == {
         'extras_require': {
             'socks': ['requests[socks]'],
