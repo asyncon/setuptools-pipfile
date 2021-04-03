@@ -6,9 +6,9 @@ stages:
   - test
   - deploy
 
-install: 
+install:
   - pip install -U pip
-  - pip install pytest pytest-cov -e .
+  - pip install -U pytest pytest-cov -e .
 script: pytest
 
 jobs:
