@@ -28,6 +28,7 @@ jobs:
         provider: pypi
         distributions: "sdist bdist_wheel"
         username: __token__
+        password: $PYPI_PASSWORD
         edge: true
         skip_existing: true
         on:
