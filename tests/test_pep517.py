@@ -133,3 +133,93 @@ def test_use_pipfile_unset(pp, dist):
     write_pyproject(pp, None)
     finalize_dist(dist, str(pp.absolute()))
     assert dist == {}
+
+
+def test_true(pp, pf, dist, cd_tmp_path):
+    write_toml(pf, {
+        'packages': {'requests': '*',},
+        'dev-packages': {'setuptools': '>=41.0.0',},
+    })
+    write_pyproject(pp, True)
+    with cd_tmp_path:
+        finalize_dist(dist)
+    assert dist == {
+        'install_requires': ['requests'],
+        'tests_require': ['setuptools>=41.0.0']
+    }
+
+
+def test_empty_dict(pp, pf, dist, cd_tmp_path):
+    write_toml(pf, {
+        'packages': {'requests': '*',},
+        'dev-packages': {'setuptools': '>=41.0.0',},
+    })
+    write_pyproject(pp, {})
+    with cd_tmp_path:
+        finalize_dist(dist)
+    assert dist == {
+        'install_requires': ['requests'],
+        'tests_require': ['setuptools>=41.0.0']
+    }
+
+
+def test_integer_one(pp, pf, dist, cd_tmp_path):
+    write_toml(pf, {
+        'extra': {
+            'socks': {
+                'requests': Spec({'extras': ['socks'], 'version': '*'}),
+            },
+        },
+    })
+    write_pyproject(pp, 1)
+    with cd_tmp_path:
+        finalize_dist(dist)
+    assert dist == {
+        'extras_require': {
+            'socks': ['requests[socks]'],
+        },
+    }
+
+
+def test_integer_two(pp, pf, dist, cd_tmp_path):
+    write_toml(pf, {
+        'extra': [
+            {
+                'name': 'socks',
+                'packages': {
+                    'requests': Spec({'extras': ['socks'], 'version': '*'}),
+                }
+            }
+        ]
+    })
+    write_pyproject(pp, 2)
+    with cd_tmp_path:
+        finalize_dist(dist)
+    assert dist == {
+        'extras_require': {
+            'socks': ['requests[socks]'],
+        }
+    }
+
+
+def test_integer_three(pp, pf, dist, cd_tmp_path):
+    write_toml(pf, {
+        'dev-packages': {
+            'coverage': Spec({'extras': ['toml'], 'version': '*'}),
+        }
+    })
+    write_pyproject(pp, 3)
+    with cd_tmp_path:
+        finalize_dist(dist)
+    assert dist == {
+        'extras_require': {
+            'dev': ['coverage[toml]'],
+        },
+        'tests_require': ['coverage[toml]'],
+    }
+
+
+def test_missing_pyproject_file(dist, cd_tmp_path):
+    with cd_tmp_path:
+        finalize_dist(dist)
+    assert dist == {}

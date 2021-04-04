@@ -126,3 +126,79 @@ def test_complex_dependencies(pf, dist):
 def test_use_pipfile_unset(dist):
     use_pipfile(dist, 'use_pipfile', None)
     assert dist == {}
+
+
+def test_true(pf, dist, cd_tmp_path):
+    write_toml(pf, {
+        'packages': {'requests': '*',},
+        'dev-packages': {'setuptools': '>=41.0.0',},
+    })
+    with cd_tmp_path:
+        use_pipfile(dist, 'use_pipfile', True)
+    assert dist == {
+        'install_requires': ['requests'],
+        'tests_require': ['setuptools>=41.0.0']
+    }
+
+
+def test_empty_dict(pf, dist, cd_tmp_path):
+    write_toml(pf, {
+        'packages': {'requests': '*',},
+        'dev-packages': {'setuptools': '>=41.0.0',},
+    })
+    with cd_tmp_path:
+        use_pipfile(dist, 'use_pipfile', {})
+    assert dist == {}
+
+
+def test_integer_one(pf, dist, cd_tmp_path):
+    write_toml(pf, {
+        'extra': {
+            'socks': {
+                'requests': Spec({'extras': ['socks'], 'version': '*'}),
+            },
+        },
+    })
+    with cd_tmp_path:
+        use_pipfile(dist, 'use_pipfile', 1)
+    assert dist == {
+        'extras_require': {
+            'socks': ['requests[socks]'],
+        },
+    }
+
+
+def test_integer_two(pf, dist, cd_tmp_path):
+    write_toml(pf, {
+        'extra': [
+            {
+                'name': 'socks',
+                'packages': {
+                    'requests': Spec({'extras': ['socks'], 'version': '*'}),
+                }
+            }
+        ]
+    })
+    with cd_tmp_path:
+        use_pipfile(dist, 'use_pipfile', 2)
+    assert dist == {
+        'extras_require': {
+            'socks': ['requests[socks]'],
+        }
+    }
+
+
+def test_integer_three(pf, dist, cd_tmp_path):
+    write_toml(pf, {
+        'dev-packages': {
+            'coverage': Spec({'extras': ['toml'], 'version': '*'}),
+        }
+    })
+    with cd_tmp_path:
+        use_pipfile(dist, 'use_pipfile', 3)
+    assert dist == {
+        'extras_require': {
+            'dev': ['coverage[toml]'],
+        },
+        'tests_require': ['coverage[toml]'],
+    }
