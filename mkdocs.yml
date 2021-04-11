@@ -1,0 +1,36 @@
+site_name: setuptools-pipfile
+site_url: https://asyncon.github.io/setuptools-pipfile/
+site_author: asyncon
+site_description: Dependency management via Pipfile
+
+repo_name: asyncon/setuptools-pipfile
+repo_url: https://github.com/asyncon/setuptools-pipfile
+edit_uri: ""
+
+copyright: Copyright &copy; 2019 - 2021 asyncon
+
+theme:
+  name: material
+  palette:
+    - scheme: default
+      primary: indigo
+      accent: orange
+      media: "(prefers-color-scheme: light)"
+      toggle:
+        icon: material/toggle-switch-off-outline
+        name: Switch to dark mode
+    - scheme: slate
+      primary: deep orange
+      accent: blue
+      media: "(prefers-color-scheme: dark)"
+      toggle:
+        icon: material/toggle-switch
+        name: Switch to light mode
+
+markdown_extensions:
+  - meta
+  - admonition
+  - pymdownx.highlight
+  - pymdownx.inlinehilite
+  - pymdownx.superfences
+  - pymdownx.tabbed

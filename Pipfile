@@ -9,6 +9,7 @@ pytest = "*"
 pytest-cov = "*"
 flake8 = "*"
 flake8-bugbear = "*"
+mkdocs-material = {markers = "python_version >= '3.8'", version = "*"}
 
 [packages]
 toml = "*"
