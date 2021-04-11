@@ -1,0 +1,939 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Dependency management via Pipfile">
+      
+      
+      
+        <meta name="author" content="asyncon">
+      
+      
+        <link rel="canonical" href="https://asyncon.github.io/setuptools-pipfile/config-advanced/">
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.1.2, mkdocs-material-7.1.1">
+    
+    
+      
+        <title>Advanced Usage - setuptools-pipfile</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.9299cb39.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ef6f36e2.min.css">
+        
+      
+    
+    
+    
+      
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>:root{--md-text-font-family:"Roboto";--md-code-font-family:"Roboto Mono"}</style>
+      
+    
+    
+    
+    
+      
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="orange">
+  
+    
+    <script>function __prefix(e){return new URL("..",location).pathname+"."+e}function __get(e,t=localStorage){return JSON.parse(t.getItem(__prefix(e)))}</script>
+    
+      <script>var palette=__get("__palette");if(null!==palette&&"object"==typeof palette.color)for(var key in palette.color)document.body.setAttribute("data-md-color-"+key,palette.color[key])</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#advanced-usage" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="setuptools-pipfile" class="md-header__button md-logo" aria-label="setuptools-pipfile" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            setuptools-pipfile
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Advanced Usage
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      <form class="md-header__option" data-md-component="palette">
+        
+          
+          
+          <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="orange" type="radio" name="__palette" id="__palette_1">
+          <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_2" hidden>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M7 10a2 2 0 0 1 2 2 2 2 0 0 1-2 2 2 2 0 0 1-2-2 2 2 0 0 1 2-2m10-3a5 5 0 0 1 5 5 5 5 0 0 1-5 5H7a5 5 0 0 1-5-5 5 5 0 0 1 5-5h10M7 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3h10a3 3 0 0 0 3-3 3 3 0 0 0-3-3H7z"/></svg>
+          </label>
+        
+          
+          
+          <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="deep-orange" data-md-color-accent="blue" type="radio" name="__palette" id="__palette_2">
+          <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h10a5 5 0 0 0 5-5 5 5 0 0 0-5-5m0 8a3 3 0 0 1-3-3 3 3 0 0 1 3-3 3 3 0 0 1 3 3 3 3 0 0 1-3 3z"/></svg>
+          </label>
+        
+      </form>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+      </label>
+      
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" data-md-state="active" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </label>
+      <button type="reset" class="md-search__icon md-icon" aria-label="Clear" tabindex="-1">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        
+<a href="https://github.com/asyncon/setuptools-pipfile" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    asyncon/setuptools-pipfile
+  </div>
+</a>
+      </div>
+    
+  </nav>
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="setuptools-pipfile" class="md-nav__button md-logo" aria-label="setuptools-pipfile" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    setuptools-pipfile
+  </label>
+  
+    <div class="md-nav__source">
+      
+<a href="https://github.com/asyncon/setuptools-pipfile" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    asyncon/setuptools-pipfile
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        Overview
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../basic-setup/" class="md-nav__link">
+        Setup
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Advanced Usage
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        Advanced Usage
+      </a>
+      
+        
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#pipfile-path" class="md-nav__link">
+    Pipfile Path
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#environment-variable-interpolation" class="md-nav__link">
+    Environment Variable Interpolation
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#disabling-custom-index-dependency-links" class="md-nav__link">
+    Disabling Custom Index Dependency Links
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#populate-python-requires" class="md-nav__link">
+    Populate Python Requires
+  </a>
+  
+    <nav class="md-nav" aria-label="Populate Python Requires">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#alternative-formatting" class="md-nav__link">
+    Alternative Formatting
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#populate-extras" class="md-nav__link">
+    Populate Extras
+  </a>
+  
+    <nav class="md-nav" aria-label="Populate Extras">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#style-one" class="md-nav__link">
+    Style One
+  </a>
+  
+    <nav class="md-nav" aria-label="Style One">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#rename-table" class="md-nav__link">
+    Rename Table
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#style-two" class="md-nav__link">
+    Style Two
+  </a>
+  
+    <nav class="md-nav" aria-label="Style Two">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#rename-table_1" class="md-nav__link">
+    Rename Table
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rename-subtable" class="md-nav__link">
+    Rename Subtable
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#change-naming-key" class="md-nav__link">
+    Change naming key
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#complete-example" class="md-nav__link">
+    Complete example
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#style-three" class="md-nav__link">
+    Style Three
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../future-state/" class="md-nav__link">
+        Future State
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#pipfile-path" class="md-nav__link">
+    Pipfile Path
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#environment-variable-interpolation" class="md-nav__link">
+    Environment Variable Interpolation
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#disabling-custom-index-dependency-links" class="md-nav__link">
+    Disabling Custom Index Dependency Links
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#populate-python-requires" class="md-nav__link">
+    Populate Python Requires
+  </a>
+  
+    <nav class="md-nav" aria-label="Populate Python Requires">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#alternative-formatting" class="md-nav__link">
+    Alternative Formatting
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#populate-extras" class="md-nav__link">
+    Populate Extras
+  </a>
+  
+    <nav class="md-nav" aria-label="Populate Extras">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#style-one" class="md-nav__link">
+    Style One
+  </a>
+  
+    <nav class="md-nav" aria-label="Style One">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#rename-table" class="md-nav__link">
+    Rename Table
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#style-two" class="md-nav__link">
+    Style Two
+  </a>
+  
+    <nav class="md-nav" aria-label="Style Two">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#rename-table_1" class="md-nav__link">
+    Rename Table
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rename-subtable" class="md-nav__link">
+    Rename Subtable
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#change-naming-key" class="md-nav__link">
+    Change naming key
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#complete-example" class="md-nav__link">
+    Complete example
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#style-three" class="md-nav__link">
+    Style Three
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content" data-md-component="content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                
+                <h1 id="advanced-usage">Advanced Usage</h1>
+<p>These are features that aren't currently provided by <a href="https://pypi.org/project/pipenv/">pipenv</a> but hope they will be in the future.</p>
+<p>To enable advanced mode simply provide a dict of options.</p>
+<h2 id="pipfile-path">Pipfile Path</h2>
+<p>To change the path in advanced mode simply set the path key.</p>
+<div class="tabbed-set" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><label for="__tabbed_1_1">pyproject.toml</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="k">[tool.setuptools-pipfile]</span>
+<span class="n">path</span> <span class="o">=</span> <span class="s">&quot;src/Pipfile&quot;</span>
+</code></pre></div>
+</div>
+<input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><label for="__tabbed_1_2">setup.py</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">setup</span><span class="p">(</span><span class="n">use_pipfile</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;path&#39;</span><span class="p">:</span> <span class="s1">&#39;src/Pipfile&#39;</span><span class="p">})</span>
+</code></pre></div>
+</div>
+</div>
+<h2 id="environment-variable-interpolation">Environment Variable Interpolation</h2>
+<p>If this pipenv feature is required for some reason it can reenabled by setting the interpolate key.</p>
+<div class="tabbed-set" data-tabs="2:2"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio" /><label for="__tabbed_2_1">pyproject.toml</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="k">[tool.setuptools-pipfile]</span>
+<span class="n">interpolate</span> <span class="o">=</span> <span class="kc">true</span>
+</code></pre></div>
+</div>
+<input id="__tabbed_2_2" name="__tabbed_2" type="radio" /><label for="__tabbed_2_2">setup.py</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">setup</span><span class="p">(</span><span class="n">use_pipfile</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;interpolate&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">})</span>
+</code></pre></div>
+</div>
+</div>
+<p>Note that if interpolation is enabled all index urls will have their basic auth
+credentials stripped to prevent them from being populated into package metadata.</p>
+<h2 id="disabling-custom-index-dependency-links">Disabling Custom Index Dependency Links</h2>
+<p>To disable the population of custom index dependency links simply set the indexes key.</p>
+<div class="tabbed-set" data-tabs="3:2"><input checked="checked" id="__tabbed_3_1" name="__tabbed_3" type="radio" /><label for="__tabbed_3_1">pyproject.toml</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="k">[tool.setuptools-pipfile]</span>
+<span class="n">indexes</span> <span class="o">=</span> <span class="kc">false</span>
+</code></pre></div>
+</div>
+<input id="__tabbed_3_2" name="__tabbed_3" type="radio" /><label for="__tabbed_3_2">setup.py</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">setup</span><span class="p">(</span><span class="n">use_pipfile</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;indexes&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">})</span>
+</code></pre></div>
+</div>
+</div>
+<p>To hard set these as a direct urls in <code>install_requires</code> and <code>tests_require</code>
+against the <a href="https://www.python.org/dev/peps/pep-0440/#direct-references">pep440</a> advice set to <code>True</code>.</p>
+<div class="tabbed-set" data-tabs="4:2"><input checked="checked" id="__tabbed_4_1" name="__tabbed_4" type="radio" /><label for="__tabbed_4_1">pyproject.toml</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="k">[tool.setuptools-pipfile]</span>
+<span class="n">indexes</span> <span class="o">=</span> <span class="kc">true</span>
+</code></pre></div>
+</div>
+<input id="__tabbed_4_2" name="__tabbed_4" type="radio" /><label for="__tabbed_4_2">setup.py</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">setup</span><span class="p">(</span><span class="n">use_pipfile</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;indexes&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">})</span>
+</code></pre></div>
+</div>
+</div>
+<h2 id="populate-python-requires">Populate Python Requires</h2>
+<p>Pipfile currently locks to a specific minor version. This is copied to Pipfile.lock. 
+A better behaviour would be to allow defining a range of permissible versions. 
+Then upon running <code>pipenv install</code> a concreate version is locked into Pipfile.lock.</p>
+<p>To enable this in the future set the pythons key to <code>True</code>.</p>
+<div class="tabbed-set" data-tabs="5:2"><input checked="checked" id="__tabbed_5_1" name="__tabbed_5" type="radio" /><label for="__tabbed_5_1">pyproject.toml</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="k">[tool.setuptools-pipfile]</span>
+<span class="n">pythons</span> <span class="o">=</span> <span class="kc">true</span>
+</code></pre></div>
+</div>
+<input id="__tabbed_5_2" name="__tabbed_5" type="radio" /><label for="__tabbed_5_2">setup.py</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">setup</span><span class="p">(</span><span class="n">use_pipfile</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;pythons&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">})</span>
+</code></pre></div>
+</div>
+</div>
+<h3 id="alternative-formatting">Alternative Formatting</h3>
+<p>To change the key to lookup set the pythons key to an alternate format string.</p>
+<div class="tabbed-set" data-tabs="6:2"><input checked="checked" id="__tabbed_6_1" name="__tabbed_6" type="radio" /><label for="__tabbed_6_1">pyproject.toml</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="k">[tool.setuptools-pipfile]</span>
+<span class="n">pythons</span> <span class="o">=</span> <span class="s">&quot;{0[requires][python_versions]}&quot;</span>
+</code></pre></div>
+</div>
+<input id="__tabbed_6_2" name="__tabbed_6" type="radio" /><label for="__tabbed_6_2">setup.py</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">setup</span><span class="p">(</span><span class="n">use_pipfile</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;pythons&#39;</span><span class="p">:</span> <span class="s1">&#39;</span><span class="si">{0[requires][python_versions]}</span><span class="s1">&#39;</span><span class="p">})</span>
+</code></pre></div>
+</div>
+</div>
+<h2 id="populate-extras">Populate Extras</h2>
+<p>This is currently not supported by Pipfile but if it does it will likely be supported in one of three ways.</p>
+<h3 id="style-one">Style One</h3>
+<p>The first and more likely style looks like so:</p>
+<div class="highlight"><pre><span></span><code><span class="k">[extra.socks]</span>
+<span class="n">PySocks</span> <span class="o">=</span> <span class="p">{</span><span class="n">version</span> <span class="o">=</span> <span class="s">&quot;&gt;=1.5.6, !1.5.7&quot;</span><span class="p">}</span>
+<span class="n">win_inet_pton</span> <span class="o">=</span> <span class="p">{</span><span class="n">sys_platform</span> <span class="o">=</span> <span class="s">&quot;win32&quot;</span><span class="p">,</span> <span class="n">python_version</span> <span class="o">=</span> <span class="s">&quot;2.7&quot;</span><span class="p">}</span>
+</code></pre></div>
+<p>To use the default setup for style one:</p>
+<div class="tabbed-set" data-tabs="7:2"><input checked="checked" id="__tabbed_7_1" name="__tabbed_7" type="radio" /><label for="__tabbed_7_1">pyproject.toml</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="k">[tool.setuptools-pipfile]</span>
+<span class="n">extras</span> <span class="o">=</span> <span class="kc">true</span>
+<span class="c1"># or</span>
+<span class="k">[tool.setuptools-pipfile]</span>
+<span class="n">extras</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="c1"># or</span>
+<span class="k">[tool]</span>
+<span class="n">setuptools-pipfile</span> <span class="o">=</span> <span class="mi">1</span>
+</code></pre></div>
+</div>
+<input id="__tabbed_7_2" name="__tabbed_7" type="radio" /><label for="__tabbed_7_2">setup.py</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">setup</span><span class="p">(</span><span class="n">use_pipfile</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;extras&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">})</span>
+<span class="c1"># or</span>
+<span class="n">setup</span><span class="p">(</span><span class="n">use_pipfile</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;extras&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">})</span>
+<span class="c1"># or</span>
+<span class="n">setup</span><span class="p">(</span><span class="n">use_pipfile</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</code></pre></div>
+</div>
+</div>
+<h4 id="rename-table">Rename Table</h4>
+<p>To change the prefix for the table to something like <code>[option.socks]</code> use:</p>
+<div class="tabbed-set" data-tabs="8:3"><input checked="checked" id="__tabbed_8_1" name="__tabbed_8" type="radio" /><label for="__tabbed_8_1">pyproject.toml</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="k">[tool.setuptools-pipfile]</span>
+<span class="n">extras</span><span class="p">.</span><span class="n">table</span> <span class="o">=</span> <span class="s">&quot;option&quot;</span>
+</code></pre></div>
+</div>
+<input id="__tabbed_8_2" name="__tabbed_8" type="radio" /><label for="__tabbed_8_2">setup.py</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">setup</span><span class="p">(</span><span class="n">use_pipfile</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;extras&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;table&#39;</span><span class="p">:</span> <span class="s1">&#39;option&#39;</span><span class="p">}})</span>
+</code></pre></div>
+</div>
+<input id="__tabbed_8_3" name="__tabbed_8" type="radio" /><label for="__tabbed_8_3">Pipfile</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="k">[[option]]</span>
+<span class="n">name</span> <span class="o">=</span> <span class="s">&quot;socks&quot;</span>
+
+<span class="k">[option.packages]</span>
+<span class="n">PySocks</span> <span class="o">=</span> <span class="p">{</span><span class="n">version</span> <span class="o">=</span> <span class="s">&quot;&gt;=1.5.6, !1.5.7&quot;</span><span class="p">}</span>
+<span class="n">win_inet_pton</span> <span class="o">=</span> <span class="p">{</span><span class="n">sys_platform</span> <span class="o">=</span> <span class="s">&quot;win32&quot;</span><span class="p">,</span> <span class="n">python_version</span> <span class="o">=</span> <span class="s">&quot;2.7&quot;</span><span class="p">}</span>
+</code></pre></div>
+</div>
+</div>
+<h3 id="style-two">Style Two</h3>
+<p>The second style is based on <a href="https://poetry.eustace.io/">poetry</a> syntax.</p>
+<div class="highlight"><pre><span></span><code><span class="k">[[extra]]</span>
+<span class="n">name</span> <span class="o">=</span> <span class="s">&quot;socks&quot;</span>
+
+<span class="k">[extra.packages]</span>
+<span class="n">PySocks</span> <span class="o">=</span> <span class="p">{</span><span class="n">version</span> <span class="o">=</span> <span class="s">&quot;&gt;=1.5.6, !1.5.7&quot;</span><span class="p">}</span>
+<span class="n">win_inet_pton</span> <span class="o">=</span> <span class="p">{</span><span class="n">sys_platform</span> <span class="o">=</span> <span class="s">&quot;win32&quot;</span><span class="p">,</span> <span class="n">python_version</span> <span class="o">=</span> <span class="s">&quot;2.7&quot;</span><span class="p">}</span>
+</code></pre></div>
+<p>To use the default setup for style two:</p>
+<div class="tabbed-set" data-tabs="9:2"><input checked="checked" id="__tabbed_9_1" name="__tabbed_9" type="radio" /><label for="__tabbed_9_1">pyproject.toml</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="k">[tool.setuptools-pipfile]</span>
+<span class="n">extras</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="c1"># or</span>
+<span class="k">[tool]</span>
+<span class="n">setuptools-pipfile</span> <span class="o">=</span> <span class="mi">2</span>
+</code></pre></div>
+</div>
+<input id="__tabbed_9_2" name="__tabbed_9" type="radio" /><label for="__tabbed_9_2">setup.py</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">setup</span><span class="p">(</span><span class="n">use_pipfile</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;extras&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;style&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">}})</span>
+<span class="c1"># or</span>
+<span class="n">setup</span><span class="p">(</span><span class="n">use_pipfile</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;extras&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">})</span>
+<span class="c1"># or</span>
+<span class="n">setup</span><span class="p">(</span><span class="n">use_pipfile</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+</code></pre></div>
+</div>
+</div>
+<h4 id="rename-table_1">Rename Table</h4>
+<p>Like style one use the <code>table</code> field to change the table prefix.</p>
+<div class="tabbed-set" data-tabs="10:3"><input checked="checked" id="__tabbed_10_1" name="__tabbed_10" type="radio" /><label for="__tabbed_10_1">pyproject.toml</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="k">[tool.setuptools-pipfile]</span>
+<span class="n">extras</span><span class="p">.</span><span class="n">style</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="n">extras</span><span class="p">.</span><span class="n">table</span> <span class="o">=</span> <span class="n">option</span>
+</code></pre></div>
+</div>
+<input id="__tabbed_10_2" name="__tabbed_10" type="radio" /><label for="__tabbed_10_2">setup.py</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">setup</span><span class="p">(</span><span class="n">use_pipfile</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;extras&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;style&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;table&#39;</span><span class="p">:</span> <span class="s1">&#39;option&#39;</span><span class="p">}})</span>
+</code></pre></div>
+</div>
+<input id="__tabbed_10_3" name="__tabbed_10" type="radio" /><label for="__tabbed_10_3">Pipfile</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="k">[[option]]</span>
+<span class="n">name</span> <span class="o">=</span> <span class="s">&quot;socks&quot;</span>
+
+<span class="k">[option.packages]</span>
+<span class="n">PySocks</span> <span class="o">=</span> <span class="p">{</span><span class="n">version</span> <span class="o">=</span> <span class="s">&quot;&gt;=1.5.6, !1.5.7&quot;</span><span class="p">}</span>
+<span class="n">win_inet_pton</span> <span class="o">=</span> <span class="p">{</span><span class="n">sys_platform</span> <span class="o">=</span> <span class="s">&quot;win32&quot;</span><span class="p">,</span> <span class="n">python_version</span> <span class="o">=</span> <span class="s">&quot;2.7&quot;</span><span class="p">}</span>
+</code></pre></div>
+</div>
+</div>
+<h4 id="rename-subtable">Rename Subtable</h4>
+<p>Use the <code>subtable</code> field to change the suffix used to describe the packages.</p>
+<div class="tabbed-set" data-tabs="11:3"><input checked="checked" id="__tabbed_11_1" name="__tabbed_11" type="radio" /><label for="__tabbed_11_1">pyproject.toml</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="k">[tool.setuptools-pipfile]</span>
+<span class="n">extra</span><span class="p">.</span><span class="n">style</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="n">extra</span><span class="p">.</span><span class="n">subtable</span> <span class="o">=</span> <span class="s">&quot;requires&quot;</span>
+</code></pre></div>
+</div>
+<input id="__tabbed_11_2" name="__tabbed_11" type="radio" /><label for="__tabbed_11_2">setup.py</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">setup</span><span class="p">(</span><span class="n">use_pipfile</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;extras&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;style&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;subtable&#39;</span><span class="p">:</span> <span class="s1">&#39;requires&#39;</span><span class="p">}})</span>
+</code></pre></div>
+</div>
+<input id="__tabbed_11_3" name="__tabbed_11" type="radio" /><label for="__tabbed_11_3">Pipfile</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="k">[[extra]]</span>
+<span class="n">name</span> <span class="o">=</span> <span class="s">&quot;socks&quot;</span>
+
+<span class="k">[extra.requires]</span>
+<span class="n">PySocks</span> <span class="o">=</span> <span class="p">{</span><span class="n">version</span> <span class="o">=</span> <span class="s">&quot;&gt;=1.5.6, !1.5.7&quot;</span><span class="p">}</span>
+<span class="n">win_inet_pton</span> <span class="o">=</span> <span class="p">{</span><span class="n">sys_platform</span> <span class="o">=</span> <span class="s">&quot;win32&quot;</span><span class="p">,</span> <span class="n">python_version</span> <span class="o">=</span> <span class="s">&quot;2.7&quot;</span><span class="p">}</span>
+</code></pre></div>
+</div>
+</div>
+<h4 id="change-naming-key">Change naming key</h4>
+<p>Finally to change the key used to identify the extra group use:</p>
+<div class="tabbed-set" data-tabs="12:3"><input checked="checked" id="__tabbed_12_1" name="__tabbed_12" type="radio" /><label for="__tabbed_12_1">pyproject.toml</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="k">[tool.setuptools-pipfile]</span>
+<span class="n">extras</span><span class="p">.</span><span class="n">style</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="n">extras</span><span class="p">.</span><span class="n">key</span> <span class="o">=</span> <span class="s">&quot;title&quot;</span>
+</code></pre></div>
+</div>
+<input id="__tabbed_12_2" name="__tabbed_12" type="radio" /><label for="__tabbed_12_2">setup.py</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">setup</span><span class="p">(</span><span class="n">use_pipfile</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;extras&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;style&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;key&#39;</span><span class="p">:</span> <span class="s1">&#39;title&#39;</span><span class="p">}})</span>
+</code></pre></div>
+</div>
+<input id="__tabbed_12_3" name="__tabbed_12" type="radio" /><label for="__tabbed_12_3">Pipfile</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="k">[[extra]]</span>
+<span class="n">title</span> <span class="o">=</span> <span class="s">&quot;socks&quot;</span>
+</code></pre></div>
+</div>
+</div>
+<h4 id="complete-example">Complete example</h4>
+<p>To change the packaging suffix to something like <code>[extras.require]</code> with a naming key of <code>group</code> use:</p>
+<div class="tabbed-set" data-tabs="13:3"><input checked="checked" id="__tabbed_13_1" name="__tabbed_13" type="radio" /><label for="__tabbed_13_1">pyproject.toml</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="k">[tool.setuptools-pipfile]</span>
+<span class="n">extras</span><span class="p">.</span><span class="n">style</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="n">extras</span><span class="p">.</span><span class="n">key</span> <span class="o">=</span> <span class="s">&quot;group&quot;</span>
+<span class="n">extras</span><span class="p">.</span><span class="n">table</span> <span class="o">=</span> <span class="s">&quot;extras&quot;</span>
+<span class="n">extras</span><span class="p">.</span><span class="n">subtable</span> <span class="o">=</span> <span class="s">&quot;require&quot;</span>
+</code></pre></div>
+</div>
+<input id="__tabbed_13_2" name="__tabbed_13" type="radio" /><label for="__tabbed_13_2">setup.py</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">setup</span><span class="p">(</span><span class="n">use_pipfile</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;extras&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;style&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;table&#39;</span><span class="p">:</span> <span class="s1">&#39;extras&#39;</span><span class="p">,</span> <span class="s1">&#39;subtable&#39;</span><span class="p">:</span> <span class="s1">&#39;require&#39;</span><span class="p">}})</span>
+</code></pre></div>
+</div>
+<input id="__tabbed_13_3" name="__tabbed_13" type="radio" /><label for="__tabbed_13_3">Pipfile</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="k">[[extras]]</span>
+<span class="n">group</span> <span class="o">=</span> <span class="s">&quot;socks&quot;</span>
+
+<span class="k">[extras.require]</span>
+<span class="n">PySocks</span> <span class="o">=</span> <span class="p">{</span><span class="n">version</span> <span class="o">=</span> <span class="s">&quot;&gt;=1.5.6, !1.5.7&quot;</span><span class="p">}</span>
+<span class="n">win_inet_pton</span> <span class="o">=</span> <span class="p">{</span><span class="n">sys_platform</span> <span class="o">=</span> <span class="s">&quot;win32&quot;</span><span class="p">,</span> <span class="n">python_version</span> <span class="o">=</span> <span class="s">&quot;2.7&quot;</span><span class="p">}</span>
+</code></pre></div>
+</div>
+</div>
+<h3 id="style-three">Style Three</h3>
+<p>The third style is based on the Pipfile dev-packages implementation.</p>
+<div class="highlight"><pre><span></span><code><span class="k">[socks-packages]</span>
+<span class="n">PySocks</span> <span class="o">=</span> <span class="p">{</span><span class="n">version</span> <span class="o">=</span> <span class="s">&quot;&gt;=1.5.6, !1.5.7&quot;</span><span class="p">}</span>
+<span class="n">win_inet_pton</span> <span class="o">=</span> <span class="p">{</span><span class="n">sys_platform</span> <span class="o">=</span> <span class="s">&quot;win32&quot;</span><span class="p">,</span> <span class="n">python_version</span> <span class="o">=</span> <span class="s">&quot;2.7&quot;</span><span class="p">}</span>
+</code></pre></div>
+<p>To use style three:</p>
+<div class="tabbed-set" data-tabs="14:2"><input checked="checked" id="__tabbed_14_1" name="__tabbed_14" type="radio" /><label for="__tabbed_14_1">pyproject.toml</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="k">[tool.setuptools-pipfile]</span>
+<span class="n">extras</span><span class="p">.</span><span class="n">style</span> <span class="o">=</span> <span class="mi">3</span>
+<span class="c1"># or</span>
+<span class="k">[tool]</span>
+<span class="n">setuptools-pipfile</span> <span class="o">=</span> <span class="mi">3</span>
+</code></pre></div>
+</div>
+<input id="__tabbed_14_2" name="__tabbed_14" type="radio" /><label for="__tabbed_14_2">setup.py</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">setup</span><span class="p">(</span><span class="n">use_pipfile</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;extras&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;style&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">}})</span>
+<span class="c1"># or</span>
+<span class="n">setup</span><span class="p">(</span><span class="n">use_pipfile</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;extras&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">})</span>
+<span class="c1"># or</span>
+<span class="n">setup</span><span class="p">(</span><span class="n">use_pipfile</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+</code></pre></div>
+</div>
+</div>
+<p>This last varient is the quickest way to make the dev packages installable.
+This could be useful for testing frameworks such as tox.
+Simply specify your dependencies to be <code>.[dev]</code> or package install extras to <code>dev</code>.</p>
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+        
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <nav class="md-footer__inner md-grid" aria-label="Footer">
+      
+        <a href="../basic-setup/" class="md-footer__link md-footer__link--prev" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              Setup
+            </div>
+          </div>
+        </a>
+      
+      
+        <a href="../future-state/" class="md-footer__link md-footer__link--next" rel="next">
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              Future State
+            </div>
+          </div>
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
+          </div>
+        </a>
+      
+    </nav>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+          <div class="md-footer-copyright__highlight">
+            Copyright &copy; 2019 - 2021 asyncon
+          </div>
+        
+        Made with
+        <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+          Material for MkDocs
+        </a>
+        
+      </div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    <script id="__config" type="application/json">{"base": "..", "features": [], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing"}, "search": "../assets/javascripts/workers/search.fe42c31b.min.js", "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.7353b375.min.js"></script>
+      
+    
+  </body>
+</html>
