@@ -1,5 +1,5 @@
 site_name: setuptools-pipfile
-site_url: https://asyncon.github.io/setuptools-pipfile/
+site_url: https://setuptools-pipfile.readthedocs.io/
 site_author: asyncon
 site_description: Dependency management via Pipfile
 
@@ -7,7 +7,7 @@ repo_name: asyncon/setuptools-pipfile
 repo_url: https://github.com/asyncon/setuptools-pipfile
 edit_uri: ""
 
-copyright: Copyright &copy; 2019 - 2021 asyncon
+copyright: Copyright &copy; 2019 - 2022 asyncon
 
 theme:
   name: material

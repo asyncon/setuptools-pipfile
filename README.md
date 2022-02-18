@@ -2,7 +2,8 @@
 
 Dependency management via Pipfile
 
-[![Travis (.org)](https://img.shields.io/travis/asyncon/setuptools-pipfile)](https://travis-ci.org/projects/asyncon/setuptools-pipfile)
+[![CI](https://github.com/asyncon/setuptools-pipfile/actions/workflows/ci.yml/badge.svg)](https://github.com/asyncon/setuptools-pipfile/actions/workflows/ci.yml)
+[![Docs](https://readthedocs.org/projects/setuptools-pipfile/badge/?version=latest)](https://setuptools-pipfile.readthedocs.io/en/latest/?badge=latest)
 [![MIT](https://img.shields.io/pypi/l/setuptools-pipfile.svg)](https://github.com/asyncon/setuptools-pipfile/blob/master/LICENSE)
 [![PyPI](https://img.shields.io/pypi/v/setuptools-pipfile.svg)](https://pypi.org/project/setuptools-pipfile/)
 [![Python](https://img.shields.io/pypi/pyversions/setuptools-pipfile.svg)](https://pypi.org/project/setuptools-pipfile/)
@@ -24,4 +25,4 @@ Advanced configuration can be used to control:
 - Activate and control populating `extras_require`.
 - Control populating `python_requires`.
 
-All documentation is located [here](https://asyncon.github.io/setuptools-pipfile/).
+All documentation is located [here](https://setuptools-pipfile.readthedocs.io/).
