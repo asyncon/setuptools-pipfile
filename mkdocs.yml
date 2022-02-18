@@ -1,5 +1,5 @@
 site_name: setuptools-pipfile
-site_url: https://setuptools-pipfile.readthedocs.io/
+site_url: https://setuptools-pipfile.readthedocs.io
 site_author: asyncon
 site_description: Dependency management via Pipfile
 

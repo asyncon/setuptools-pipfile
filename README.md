@@ -25,4 +25,4 @@ Advanced configuration can be used to control:
 - Activate and control populating `extras_require`.
 - Control populating `python_requires`.
 
-All documentation is located [here](https://setuptools-pipfile.readthedocs.io/).
+All documentation is located [here](https://setuptools-pipfile.readthedocs.io).

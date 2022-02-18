@@ -1,4 +1,4 @@
-from setuptools_pipfile.pipfile import Pipfile, DistutilsFileError, DistutilsSetupError
+from setuptools_pipfile.pipfile import Pipfile
 from conftest import Spec, write_toml, requires, source, pytest
 import os
 
@@ -71,7 +71,7 @@ def test_python_requires(pf):
 
 
 def test_missing_pipfile(pf):
-    with pytest.raises(DistutilsFileError):
+    with pytest.raises(FileNotFoundError):
         Pipfile(pf)
 
 
@@ -86,7 +86,7 @@ def test_multiple_urls(pf):
             }),
         }
     })
-    with pytest.raises(DistutilsSetupError):
+    with pytest.raises(ValueError):
         Pipfile(pf).setup_kwargs()
 
 
@@ -100,7 +100,7 @@ def test_url_with_version(pf):
             }),
         }
     })
-    with pytest.raises(DistutilsSetupError):
+    with pytest.raises(ValueError):
         Pipfile(pf).setup_kwargs()
 
 

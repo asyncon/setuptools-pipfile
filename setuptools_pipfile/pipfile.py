@@ -1,7 +1,6 @@
 import os
 import toml
 from collections.abc import Mapping, Iterable
-from distutils.errors import DistutilsSetupError, DistutilsFileError
 from urllib.parse import urlparse, urlunparse
 
 setup_fields = (
@@ -80,11 +79,11 @@ class Dependency(dict):
         if not keys and 'index' not in self:
             return ''
         if len(keys) > (1 - ('index' in self)):
-            raise DistutilsSetupError(
+            raise ValueError(
                 'Pipfile Dependency[{0}] conflict: {1!r}'.format(
                     self.name, keys))
         if keys and 'version' in self:
-            raise DistutilsSetupError(
+            raise ValueError(
                 'Pipfile Dependency[{0}] conflict: {1!r}'.format(
                     self.name, ['version'] + keys))
         url = keys[0] if keys else 'index'
@@ -157,9 +156,6 @@ class Pipfile(dict):
             self.path = 'Pipfile'
         else:
             self.path = str(path)
-            if not os.path.exists(self.path):
-                raise DistutilsFileError(
-                    'Pipfile missing {0}'.format(os.path.abspath(self.path)))
 
             with open(self.path, 'r') as fp:
                 data = toml.load(fp)
