@@ -44,3 +44,27 @@ jobs:
         run: python -m pip install -U pip tox
       - name: Test
         run: tox -e py,report
+      - name: Coveralls
+        # If pushed / is a pull request against main repo AND
+        # we're running on Linux (this action only supports Linux)
+        if:
+          matrix.os == 'ubuntu-latest' && (
+            (github.event_name == 'push' && github.repository == 'asyncon/setuptools-pipfile') ||
+            github.event.pull_request.base.repo.full_name == 'asyncon/setuptools-pipfile'
+          )
+        uses: AndreMiras/coveralls-python-action@v20201129
+        with:
+          parallel: true
+          flag-name: py${{ matrix.python-version }}-${{ matrix.os }}
+
+  finish:
+    needs: test
+    if:
+      (github.event_name == 'push' && github.repository == 'asyncon/setuptools-pipfile') ||
+      github.event.pull_request.base.repo.full_name == 'asyncon/setuptools-pipfile'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Coveralls Finished
+        uses: AndreMiras/coveralls-python-action@develop
+        with:
+          parallel-finished: true
