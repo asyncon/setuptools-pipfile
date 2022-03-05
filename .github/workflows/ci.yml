@@ -48,7 +48,7 @@ jobs:
         # If pushed / is a pull request against main repo AND
         # we're running on Linux (this action only supports Linux)
         if:
-          matrix.os == 'ubuntu-latest' && (
+          matrix.os == 'ubuntu-18.04' && (
             (github.event_name == 'push' && github.repository == 'asyncon/setuptools-pipfile') ||
             github.event.pull_request.base.repo.full_name == 'asyncon/setuptools-pipfile'
           )
@@ -62,7 +62,7 @@ jobs:
     if:
       (github.event_name == 'push' && github.repository == 'asyncon/setuptools-pipfile') ||
       github.event.pull_request.base.repo.full_name == 'asyncon/setuptools-pipfile'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-18.04
     steps:
       - name: Coveralls Finished
         uses: AndreMiras/coveralls-python-action@develop
