@@ -1,0 +1,16 @@
+[paths]
+source =
+    src
+    */site-packages
+
+[run]
+branch = true
+parallel = true
+#relative_files = true
+source =
+    setuptools_pipfile
+    tests
+
+[report]
+show_missing = true
+precision = 2

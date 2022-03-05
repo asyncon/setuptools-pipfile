@@ -120,7 +120,7 @@ class Dependency(dict):
             markers = ''
         elif keys and markers:
             markers = ' and '.join([' ; ({0})'.format(markers)] + keys)
-        elif not markers:
+        elif not markers:  # pragma: no branch
             markers = ' ; ' + ' and '.join(keys)
         return markers
 

@@ -24,7 +24,7 @@ def use_pipfile(dist, attr, value):
         path = value
     elif isinstance(value, int):
         extras = value
-    elif hasattr(value, '__fspath__'):
+    elif hasattr(value, '__fspath__'):  # pragma: no cover
         path = value
 
     pipfile = Pipfile(path, interpolate, pythons, extras, indexes)

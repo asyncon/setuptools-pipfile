@@ -63,13 +63,12 @@ def write_pyproject(p, data):
 
 class Dist(dict):
     def __setattr__(self, key, value):
-        if value:
-            if key == 'python_requires':
-                check_specifier(self, key, value)
-            elif key in ('install_requires', 'tests_require'):
-                check_requirements(self, key, value)
-            elif key == 'extras_require':
-                check_extras(self, key, value)
+        if key == 'python_requires':
+            check_specifier(self, key, value)
+        elif key in ('install_requires', 'tests_require'):
+            check_requirements(self, key, value)
+        elif key == 'extras_require':
+            check_extras(self, key, value)
         self[key] = value
 
 
