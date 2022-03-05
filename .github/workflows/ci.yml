@@ -46,9 +46,10 @@ jobs:
         run: tox -e py,report
       - name: Coveralls
         # If pushed / is a pull request against main repo AND
+        # Not python 3.4 AND
         # we're running on Linux (this action only supports Linux)
         if:
-          matrix.os == 'ubuntu-18.04' && (
+          matrix.os == 'ubuntu-18.04' && matrix.python-version != '3.4' && (
             (github.event_name == 'push' && github.repository == 'asyncon/setuptools-pipfile') ||
             github.event.pull_request.base.repo.full_name == 'asyncon/setuptools-pipfile'
           )
