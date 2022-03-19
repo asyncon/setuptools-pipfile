@@ -1,3 +1,4 @@
+import pytest
 from setuptools_pipfile.keyword import finalize_dist
 from conftest import Spec, write_toml, write_pyproject, requires, source
 
@@ -102,6 +103,10 @@ def test_complex_dependencies(pp, pf, dist):
                 "path": ".",
                 "editable": True
             }),
+            "mkdocs-material": Spec({
+                "version": "*",
+                'markers': "python_version >= '3.8'"
+            }),
             "pywinusb": Spec({
                 "version": "*",
                 "sys_platform": "== 'win32'",
@@ -120,6 +125,7 @@ def test_complex_dependencies(pp, pf, dist):
         'tests_require': [
             'django @ git+https://github.com/django/django.git@1.11.4#egg=django',
             'e682b37 @ https://github.com/divio/django-cms/archive/release/3.4.x.zip',
+            "mkdocs-material ; python_version >= '3.8'",
             "pywinusb ; sys_platform == 'win32'",
             'records>0.5.0',
             'requests[socks]',
@@ -133,6 +139,12 @@ def test_use_pipfile_unset(pp, dist):
     write_pyproject(pp, None)
     finalize_dist(dist, str(pp.absolute()))
     assert dist == {}
+
+
+def test_use_pipfile_float(pp, dist):
+    write_pyproject(pp, 1.0)
+    with pytest.raises(ValueError):
+        finalize_dist(dist, str(pp.absolute()))
 
 
 def test_true(pp, pf, dist, cd_tmp_path):

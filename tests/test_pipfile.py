@@ -141,6 +141,10 @@ def test_complex_dependencies(pf, dist):
                 "path": ".",
                 "editable": True
             }),
+            "mkdocs-material": Spec({
+                "version": "*",
+                'markers': "python_version >= '3.8'"
+            }),
             "pywinusb": Spec({
                 "version": "*",
                 "sys_platform": "== 'win32'",
@@ -157,6 +161,7 @@ def test_complex_dependencies(pf, dist):
         'tests_require': [
             'django @ git+https://github.com/django/django.git@1.11.4#egg=django',
             'e682b37 @ https://github.com/divio/django-cms/archive/release/3.4.x.zip',
+            "mkdocs-material ; python_version >= '3.8'",
             "pywinusb @ https://test.pypi.org/simple/pywinusb/ ; sys_platform == 'win32'",
             'records>0.5.0',
             'requests[socks]',

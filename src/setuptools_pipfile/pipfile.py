@@ -116,12 +116,14 @@ class Dependency(dict):
     def marker(self):
         markers = self.get('markers', '')
         keys = ['{} {}'.format(k, self[k]) for k in marker_keys & self.keys()]
-        if not keys and not markers:
-            markers = ''
-        elif keys and markers:
+        if keys and markers:
             markers = ' and '.join([' ; ({0})'.format(markers)] + keys)
-        elif not markers:  # pragma: no branch
+        elif keys:
             markers = ' ; ' + ' and '.join(keys)
+        elif markers:
+            markers = ' ; ' + markers
+        else:
+            markers = ''
         return markers
 
     def __str__(self):
